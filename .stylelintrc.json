@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-prettier",
+    "stylelint-config-html"
+  ],
+  "rules": {
+    "no-empty-source": null
+  },
+  "ignoreFiles": ["node_modules/**/*", "dist/**/*", "coverage/**/*"]
+}

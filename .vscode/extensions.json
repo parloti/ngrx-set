@@ -1,0 +1,24 @@
+{
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=827846
+  "recommendations": [
+    "aljazsim.tsco",
+    "angular.ng-template",
+    "bradgashler.htmltagwrap",
+    "christian-kohler.path-intellisense",
+    "cyrilletuzi.angular-schematics",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "gruntfuggly.todo-tree",
+    "hookyqr.minify",
+    "johnpapa.angular2",
+    "letmaik.git-tree-compare",
+    "mhutchie.git-graph",
+    "pflannery.vscode-versionlens",
+    "pranaygp.vscode-css-peek",
+    "steoates.autoimport",
+    "stylelint.vscode-stylelint",
+    "waderyan.gitblame",
+    "wayou.vscode-todo-highlight",
+    "zignd.html-css-class-completion"
+  ]
+}
