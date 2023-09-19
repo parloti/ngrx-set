@@ -1,3 +1,2 @@
-export { collectEmissions } from './collect-emissions';
+export { collectCalls } from './collect-calls';
 export { marblesWork } from './marbles-work';
-export { withTestScheduler } from './with-test-scheduler';

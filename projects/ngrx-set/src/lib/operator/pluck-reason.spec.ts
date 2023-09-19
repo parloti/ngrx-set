@@ -9,6 +9,7 @@ describe(pluckReason.name, () => {
     const source$ = cold('-a', {
       a: abort({ reason: 'aborted' }),
     });
+
     expect(source$.pipe(pluckReason())).toBeObservable(
       cold('-a', { a: 'aborted' }),
     );

@@ -1,21 +1,24 @@
-import { TypedAction } from '@ngrx/store/src/models';
+import type { TypedAction } from '@ngrx/store/src/models';
 import { expectTypeOf } from 'expect-type';
-import {
-  createSet,
-  IEmptySet,
-  IFullSet,
-  IPayloadSet,
-  IQuerySet,
-} from './create-set';
-import {
+import { createSet } from './create-set';
+import type {
   IAbortCreator,
   IAction,
   IEmptyCreator,
+  IEmptySet,
   IFailureCreator,
+  IFullSet,
   IPayloadCreator,
+  IPayloadSet,
   IQueryCreator,
-} from './creators';
-import {
+  IQuerySet,
+} from './icreator-set';
+import type {
+  IFullSetFactory,
+  IPayloadSetFactory,
+  IQuerySetFactory,
+} from './icreator-set-factory';
+import type {
   IAbortProp,
   IFailureProp,
   IPayloadProp,
@@ -25,7 +28,7 @@ import {
 type IMyQuery = { body: string };
 type IMyPayload = { data: string };
 
-// createSet => IEmptySet
+// createSet(source, name) => IEmptySet
 {
   const empty = createSet('source', 'name');
   expectTypeOf(empty).toEqualTypeOf<Readonly<IEmptySet<'source', 'name'>>>();
@@ -71,7 +74,7 @@ type IMyPayload = { data: string };
   expectTypeOf(empty.success).parameters.toEqualTypeOf<[]>();
 }
 
-// createSet<IMyQuery> => IQuerySet
+// createSet<IMyQuery>(source, name) => IQuerySet
 {
   const query = createSet<IMyQuery>('source', 'name');
   expectTypeOf(query).toEqualTypeOf<
@@ -129,7 +132,7 @@ type IMyPayload = { data: string };
   expectTypeOf(query.success).parameters.toEqualTypeOf<[]>();
 }
 
-// createSet<IMyQuery, TSource> => IQuerySet
+// createSet<IMyQuery, TSource>(source, name) => IQuerySet
 {
   const query = createSet<IMyQuery, 'source'>('source', 'name');
   expectTypeOf(query).toEqualTypeOf<
@@ -184,7 +187,7 @@ type IMyPayload = { data: string };
   >();
   expectTypeOf(query.success).parameters.toEqualTypeOf<[]>();
 }
-// createSet<IMyQuery, TSource, TName> => IQuerySet
+// createSet<IMyQuery, TSource, TName>(source, name) => IQuerySet
 {
   const query = createSet<IMyQuery, 'source', 'name'>('source', 'name');
   expectTypeOf(query).toEqualTypeOf<
@@ -234,9 +237,9 @@ type IMyPayload = { data: string };
   expectTypeOf(query.success).parameters.toEqualTypeOf<[]>();
 }
 
-// createSet<void, IMyPayload> => IPayloadSet
+// createSet<undefined, IMyPayload>(source, name) => IPayloadSet
 {
-  const payload = createSet<void, IMyPayload>('source', 'name');
+  const payload = createSet<undefined, IMyPayload>('source', 'name');
   expectTypeOf(payload).toEqualTypeOf<
     Readonly<IPayloadSet<IMyPayload, string, string>>
   >();
@@ -291,9 +294,9 @@ type IMyPayload = { data: string };
     [IPayloadProp<IMyPayload>]
   >();
 }
-// createSet<void, IMyPayload, TSource> => IPayloadSet
+// createSet<undefined, IMyPayload, TSource>(source, name) => IPayloadSet
 {
-  const payload = createSet<void, IMyPayload, 'source'>('source', 'name');
+  const payload = createSet<undefined, IMyPayload, 'source'>('source', 'name');
   expectTypeOf(payload).toEqualTypeOf<
     Readonly<IPayloadSet<IMyPayload, 'source', string>>
   >();
@@ -348,9 +351,9 @@ type IMyPayload = { data: string };
     [IPayloadProp<IMyPayload>]
   >();
 }
-// createSet<void, IMyPayload, TSource, TName> => IPayloadSet
+// createSet<undefined, IMyPayload, TSource, TName>(source, name) => IPayloadSet
 {
-  const payload = createSet<void, IMyPayload, 'source', 'name'>(
+  const payload = createSet<undefined, IMyPayload, 'source', 'name'>(
     'source',
     'name',
   );
@@ -403,7 +406,7 @@ type IMyPayload = { data: string };
   >();
 }
 
-// createSet<IMyQuery, IMyPayload> => IFullSet
+// createSet<IMyQuery, IMyPayload>(source, name) => IFullSet
 {
   const full = createSet<IMyQuery, IMyPayload>('source', 'name');
   expectTypeOf(full).toEqualTypeOf<
@@ -462,7 +465,7 @@ type IMyPayload = { data: string };
     [IPayloadProp<IMyPayload>]
   >();
 }
-// createSet<IMyQuery, IMyPayload, TSource> => IFullSet
+// createSet<IMyQuery, IMyPayload, TSource>(source, name) => IFullSet
 {
   const full = createSet<IMyQuery, IMyPayload, 'source'>('source', 'name');
   expectTypeOf(full).toEqualTypeOf<
@@ -519,12 +522,177 @@ type IMyPayload = { data: string };
     [IPayloadProp<IMyPayload>]
   >();
 }
-// createSet<IMyQuery, IMyPayload, TSource, TName> => IFullSet
+// createSet<IMyQuery, IMyPayload, TSource, TName>(source, name) => IFullSet
 {
   const full = createSet<IMyQuery, IMyPayload, 'source', 'name'>(
     'source',
     'name',
   );
+  expectTypeOf(full).toEqualTypeOf<
+    Readonly<IFullSet<IMyQuery, IMyPayload, 'source', 'name'>>
+  >();
+
+  // Abort
+  expectTypeOf(full.abort).toEqualTypeOf<
+    IAbortCreator<'[source] name (Abort)'>
+  >();
+  expectTypeOf(full.abort.type).toEqualTypeOf<'[source] name (Abort)'>();
+  expectTypeOf(full.abort).returns.toEqualTypeOf<
+    IAction<IAbortProp, '[source] name (Abort)'>
+  >();
+  expectTypeOf(full.abort).parameters.toEqualTypeOf<[IAbortProp]>();
+
+  // Dispatch
+  expectTypeOf(full.dispatch).toEqualTypeOf<
+    IQueryCreator<IMyQuery, `[source] name (Dispatch)`>
+  >();
+  expectTypeOf(full.dispatch.type).toEqualTypeOf<`[source] name (Dispatch)`>();
+  expectTypeOf(full.dispatch).returns.toEqualTypeOf<
+    IAction<IQueryProp<IMyQuery>, `[source] name (Dispatch)`>
+  >();
+  expectTypeOf(full.dispatch).parameters.toEqualTypeOf<
+    [IQueryProp<IMyQuery>]
+  >();
+
+  // Failure
+  expectTypeOf(full.failure).toEqualTypeOf<
+    IFailureCreator<'[source] name (Failure)'>
+  >();
+  expectTypeOf(full.failure.type).toEqualTypeOf<'[source] name (Failure)'>();
+  expectTypeOf(full.failure).returns.toEqualTypeOf<
+    IAction<IFailureProp, '[source] name (Failure)'>
+  >();
+  expectTypeOf(full.failure).parameters.toEqualTypeOf<[IFailureProp]>();
+
+  // Success
+  expectTypeOf(full.success).toEqualTypeOf<
+    IPayloadCreator<IMyPayload, '[source] name (Success)'>
+  >();
+  expectTypeOf(full.success.type).toEqualTypeOf<'[source] name (Success)'>();
+  expectTypeOf(full.success).returns.toEqualTypeOf<
+    IAction<IPayloadProp<IMyPayload>, '[source] name (Success)'>
+  >();
+  expectTypeOf(full.success).parameters.toEqualTypeOf<
+    [IPayloadProp<IMyPayload>]
+  >();
+}
+
+// createSet<IMyQuery>() => IQuerySetFactory<IMyQuery>
+{
+  const queryFactory = createSet<IMyQuery>();
+  expectTypeOf(queryFactory).toEqualTypeOf<IQuerySetFactory<IMyQuery>>();
+
+  const query = queryFactory('source', 'name');
+  expectTypeOf(query).toEqualTypeOf<
+    Readonly<IQuerySet<IMyQuery, 'source', 'name'>>
+  >();
+
+  // Abort
+  expectTypeOf(query.abort).toEqualTypeOf<
+    IAbortCreator<'[source] name (Abort)'>
+  >();
+  expectTypeOf(query.abort.type).toEqualTypeOf<'[source] name (Abort)'>();
+  expectTypeOf(query.abort).returns.toEqualTypeOf<
+    IAction<IAbortProp, '[source] name (Abort)'>
+  >();
+  expectTypeOf(query.abort).parameters.toEqualTypeOf<[IAbortProp]>();
+
+  // Dispatch
+  expectTypeOf(query.dispatch).toEqualTypeOf<
+    IQueryCreator<IMyQuery, '[source] name (Dispatch)'>
+  >();
+  expectTypeOf(query.dispatch.type).toEqualTypeOf<'[source] name (Dispatch)'>();
+  expectTypeOf(query.dispatch).returns.toEqualTypeOf<
+    IAction<IQueryProp<IMyQuery>, '[source] name (Dispatch)'>
+  >();
+  expectTypeOf(query.dispatch).parameters.toEqualTypeOf<
+    [IQueryProp<IMyQuery>]
+  >();
+
+  // Failure
+  expectTypeOf(query.failure).toEqualTypeOf<
+    IFailureCreator<'[source] name (Failure)'>
+  >();
+  expectTypeOf(query.failure.type).toEqualTypeOf<'[source] name (Failure)'>();
+  expectTypeOf(query.failure).returns.toEqualTypeOf<
+    IAction<IFailureProp, '[source] name (Failure)'>
+  >();
+  expectTypeOf(query.failure).parameters.toEqualTypeOf<[IFailureProp]>();
+
+  // Success
+  expectTypeOf(query.success).toEqualTypeOf<
+    IEmptyCreator<'[source] name (Success)'>
+  >();
+  expectTypeOf(query.success.type).toEqualTypeOf<'[source] name (Success)'>();
+  expectTypeOf(query.success).returns.toEqualTypeOf<
+    TypedAction<'[source] name (Success)'>
+  >();
+  expectTypeOf(query.success).parameters.toEqualTypeOf<[]>();
+}
+
+// createSet<undefined, IMyPayload>() => IPayloadSetFactory<IMyPayload>
+{
+  const payloadFactory = createSet<undefined, IMyPayload>();
+  expectTypeOf(payloadFactory).toEqualTypeOf<IPayloadSetFactory<IMyPayload>>();
+
+  const payload = payloadFactory('source', 'name');
+  expectTypeOf(payload).toEqualTypeOf<
+    Readonly<IPayloadSet<IMyPayload, 'source', 'name'>>
+  >();
+
+  // Abort
+  expectTypeOf(payload.abort).toEqualTypeOf<
+    IAbortCreator<'[source] name (Abort)'>
+  >();
+  expectTypeOf(payload.abort.type).toEqualTypeOf<'[source] name (Abort)'>();
+  expectTypeOf(payload.abort).returns.toEqualTypeOf<
+    IAction<IAbortProp, '[source] name (Abort)'>
+  >();
+  expectTypeOf(payload.abort).parameters.toEqualTypeOf<[IAbortProp]>();
+
+  // Dispatch
+  expectTypeOf(payload.dispatch).toEqualTypeOf<
+    IEmptyCreator<'[source] name (Dispatch)'>
+  >();
+  expectTypeOf(
+    payload.dispatch.type,
+  ).toEqualTypeOf<'[source] name (Dispatch)'>();
+  expectTypeOf(payload.dispatch).returns.toEqualTypeOf<
+    TypedAction<'[source] name (Dispatch)'>
+  >();
+  expectTypeOf(payload.dispatch).parameters.toEqualTypeOf<[]>();
+
+  // Failure
+  expectTypeOf(payload.failure).toEqualTypeOf<
+    IFailureCreator<'[source] name (Failure)'>
+  >();
+  expectTypeOf(payload.failure.type).toEqualTypeOf<'[source] name (Failure)'>();
+  expectTypeOf(payload.failure).returns.toEqualTypeOf<
+    IAction<IFailureProp, '[source] name (Failure)'>
+  >();
+  expectTypeOf(payload.failure).parameters.toEqualTypeOf<[IFailureProp]>();
+
+  // Success
+  expectTypeOf(payload.success).toEqualTypeOf<
+    IPayloadCreator<IMyPayload, '[source] name (Success)'>
+  >();
+  expectTypeOf(payload.success.type).toEqualTypeOf<'[source] name (Success)'>();
+  expectTypeOf(payload.success).returns.toEqualTypeOf<
+    IAction<IPayloadProp<IMyPayload>, '[source] name (Success)'>
+  >();
+  expectTypeOf(payload.success).parameters.toEqualTypeOf<
+    [IPayloadProp<IMyPayload>]
+  >();
+}
+
+// createSet<IMyQuery, IMyPayload>() => IFullSetFactory<IMyQuery, IMyPayload>
+{
+  const fullFactory = createSet<IMyQuery, IMyPayload>();
+  expectTypeOf(fullFactory).toEqualTypeOf<
+    IFullSetFactory<IMyQuery, IMyPayload>
+  >();
+
+  const full = fullFactory('source', 'name');
   expectTypeOf(full).toEqualTypeOf<
     Readonly<IFullSet<IMyQuery, IMyPayload, 'source', 'name'>>
   >();

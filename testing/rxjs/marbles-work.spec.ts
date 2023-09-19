@@ -8,6 +8,7 @@ describe(marblesWork.name, () => {
     marblesWork(v => collector$.next(v), 'abc', { a: 'v1', b: 'v2', c: 'v3' });
 
     const expected$ = cold('abc', { a: 'v1', b: 'v2', c: 'v3' });
+
     expect(collector$).toBeObservable(expected$);
   });
 });

@@ -1,6 +1,6 @@
 import { cold } from 'jasmine-marbles';
 import { Subject, catchError } from 'rxjs';
-import { collectEmissions } from 'testing';
+import { collectCalls } from 'testing';
 import { marblesWork } from 'testing/rxjs';
 import { onSwitchMap } from './on-switch-map';
 
@@ -13,12 +13,13 @@ describe(onSwitchMap.name, () => {
     source$
       .pipe(onSwitchMap(outer => cold('-d-|', { d: 'd' + outer }), notifier))
       .subscribe();
-    const result$ = collectEmissions(notifier);
+    const result$ = collectCalls(notifier);
     // -a-b-
     //  -d-|
     //    -d-|
     // ---*---
     const expected$ = cold('---n---', { n: 'b' });
+
     expect(result$).toBeObservable(expected$);
   });
 
@@ -30,12 +31,13 @@ describe(onSwitchMap.name, () => {
     source$
       .pipe(onSwitchMap(outer => cold('-d-|', { d: 'd' + outer }), notifier))
       .subscribe();
-    const result$ = collectEmissions(notifier);
+    const result$ = collectCalls(notifier);
     // -a---b
     //  -d-|
     //      -d-|
     // ---------
     const expected$ = cold('---------');
+
     expect(result$).toBeObservable(expected$);
   });
 
@@ -53,12 +55,13 @@ describe(onSwitchMap.name, () => {
         catchError((_err, c) => c),
       )
       .subscribe();
-    const result$ = collectEmissions(notifier);
+    const result$ = collectCalls(notifier);
     // -a---b
     //  -d-#
     //      -d-#
     // ---------
     const expected$ = cold('---------');
+
     expect(result$).toBeObservable(expected$);
   });
 
@@ -83,6 +86,7 @@ describe(onSwitchMap.name, () => {
       p: 'cd',
       q: 'ce',
     });
+
     expect(result$).toBeObservable(expected$);
   });
 });

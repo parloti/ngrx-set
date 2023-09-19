@@ -1,4 +1,4 @@
-import { type ActionCreator, createAction, props } from '@ngrx/store';
+import { createAction, props, type ActionCreator } from '@ngrx/store';
 import { debugCreator } from './debug-creator';
 
 describe(debugCreator.name, () => {
@@ -7,12 +7,13 @@ describe(debugCreator.name, () => {
     const expected = creator.type;
     const delegate = debugCreator(creator);
     const result = delegate.type;
+
     expect(result).toBe(expected);
   });
 
   it(`should delegate call`, () => {
-    const creatorSpy = jasmine.createSpy(
-      'creator spy',
+    const creatorSpy = jasmine.createSpy<ActionCreator>(
+      'creatorSpy',
     ) as jasmine.Spy<ActionCreator> & ActionCreator;
     const delegate = debugCreator(creatorSpy);
     const props = Object.freeze({
@@ -28,6 +29,7 @@ describe(debugCreator.name, () => {
     const creator = createAction('source', props<{ error: string }>());
     const original = creator({ error: 'error' });
     const surrogate = debugCreator(creator)({ error: 'error' });
+
     expect(original).toEqual(surrogate);
   });
 });

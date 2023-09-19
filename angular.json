@@ -5,6 +5,14 @@
   "projects": {
     "ngrx-set": {
       "projectType": "library",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
       "root": "projects/ngrx-set",
       "sourceRoot": "projects/ngrx-set/src",
       "prefix": "lib",
@@ -29,7 +37,7 @@
           "options": {
             "tsConfig": "projects/ngrx-set/tsconfig.spec.json",
             "polyfills": ["zone.js", "zone.js/testing", "test-setup/index.ts"],
-            "karmaConfig": "karma.conf.js"
+            "karmaConfig": "karma.conf.ts"
           }
         },
         "lint": {
@@ -111,7 +119,7 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": ["zone.js", "zone.js/testing", "test-setup/index.ts"],
-            "karmaConfig": "karma.conf.js",
+            "karmaConfig": "karma.conf.ts",
             "tsConfig": "projects/example-app/tsconfig.spec.json",
             "assets": [
               "projects/example-app/src/favicon.ico",

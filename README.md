@@ -13,14 +13,17 @@ store.dispatch(set.abort());
 ```
 
 ## Examples
+
 More examples at:
 
 [store.ts#creators](projects/example-app/src/app/store.ts#L17)
 
-[example-effects.ts](projects/example-app/src/app/example-effects.ts) 
+[example-effects.ts](projects/example-app/src/app/example-effects.ts)
 
 ## API
+
 ### IAbortCreator
+
 Creator to be used when the request is aborted.
 
 `type IAbortCreator<TType extends string = string>`
@@ -28,6 +31,7 @@ Creator to be used when the request is aborted.
 `abort({ reason: 'reason' });`
 
 ### IFailureCreator
+
 Creator to be used when the request fails.
 
 `type IFailureCreator<TType extends string = string>`
@@ -35,6 +39,7 @@ Creator to be used when the request fails.
 `failure({ error: 'error' });`
 
 ### IQueryCreator
+
 Creator to be used when submitting a query to trigger the request.
 
 `type IQueryCreator<TQuery, TType extends string = string>`
@@ -42,22 +47,24 @@ Creator to be used when submitting a query to trigger the request.
 `dispatch({ query: TQuery });`
 
 ### IPayloadCreator
+
 Creator to be used when receiving the request payload.
 
 `type IPayloadCreator<TPayload, TType extends string = string>`
 
 `success({ payload: TPayload });`
 
-
 ### IEmptyCreator
+
 Creator to be used without passing data.
 
 `type IEmptyCreator<TType extends string>`
 
 `dispatch();`
 `success();`
-  
+
 ### ICreatorSet
+
 A set of creators related to a request.
 
 ```
@@ -73,9 +80,11 @@ interface ICreatorSet<
   success: TSuccess;
 }
 ```
+
 #### ICreatorSet aliases
 
 When neither dispatch nor success carry data.
+
 ```
 type IEmptySet<
   TSource extends string = string,
@@ -91,6 +100,7 @@ createSet('source', 'name'): IEmptySet<"source", "name">;
 ```
 
 When the dispatch action carries data but success does not.
+
 ```
 type IQuerySet<
   TQuery,
@@ -109,6 +119,7 @@ createSetCurry<IQuery>()('source', 'name'): IQuerySet<IQuery, "source", "name">;
 ```
 
 When the dispatch action does not carry data but success does.
+
 ```
 type IPayloadSet<
   TPayload,
@@ -128,6 +139,7 @@ createPayloadSetCurry<IPayload>()('source', 'name'): IPayloadSet<IPayload, "sour
 ```
 
 When both the dispatch and success actions carry data.
+
 ```
 type IFullSet<
   TQuery,
@@ -156,5 +168,6 @@ If you like `ngrx-set`, please support it:
 Thank you!
 
 P.S. If you need help, feel free to
+
 - Contact me on [twitter](https://twitter.com/parloti) or [linkedin](https://www.linkedin.com/in/parloti/)
 - [Open an issue](https://github.com/parloti/ngrx-set/issues)

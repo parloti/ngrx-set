@@ -1,14 +1,30 @@
 {
   "name": "ngrx-set",
-  "version": "0.0.1",
+  "description": "Asynchronous action for NgRx.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parloti/ngrx-set.git"
+  },
+  "keywords": [
+    "RxJS",
+    "Angular",
+    "Redux",
+    "NgRx"
+  ],
+  "author": "parloti",
+  "bugs": {
+    "url": "https://github.com/parloti/ngrx-set/issues"
+  },
+  "homepage": "https://github.com/parloti/ngrx-set#readme",
+  "license": "MIT",
+  "version": "1.0.0",
   "peerDependencies": {
-    "@angular/common": "^16.0.3",
-    "@angular/core": "^16.0.3",
-    "@ngrx/store": "^16.0.0",
-    "rxjs":"^7.8.1"
+    "@angular/common": ">=5.0.0",
+    "@ngrx/store": ">=10.0.0",
+    "rxjs": ">=6.0.0"
   },
   "dependencies": {
-    "tslib": "^2.5.2"
+    "tslib": "^2.6.2"
   },
   "sideEffects": false
 }

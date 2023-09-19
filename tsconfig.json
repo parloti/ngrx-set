@@ -14,19 +14,17 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strict": true,
+    "removeComments": false,
+    "useUnknownInCatchVariables": true,
     // Modules
     "baseUrl": "./",
     "module": "ESNext",
     "moduleResolution": "node",
     "paths": {
-      "ngrx-set": [
-        "dist/ngrx-set",
-      ],
+      "ngrx-set": ["dist/ngrx-set"]
     },
     "resolveJsonModule": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "typeRoots": ["node_modules/@types"],
     // Emit
     "declaration": false,
     "downlevelIteration": true,
@@ -41,13 +39,16 @@
     // Language and Environment
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": [
-      "ESNext",
-      "dom"
-    ],
+    "lib": ["ESNext", "dom"],
     "target": "ESNext",
     // Completeness
     "skipLibCheck": true
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs",
+      "verbatimModuleSyntax": false
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -1,24 +1,172 @@
-# NgrxSet
+# NgRxSet
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.0.
+It simplifies the creation of actions for asynchronous requests that can succeed, fail or be aborted.
 
-## Code scaffolding
+## Usage
 
-Run `ng generate component component-name --project ngrx-set` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngrx-set`.
-> Note: Don't forget to add `--project ngrx-set` or else it will be added to the default project in your `angular.json` file. 
+```ts
+const set = createSet('source', 'name');
+store.dispatch(set.dispatch());
+store.dispatch(set.success());
+store.dispatch(set.failure());
+store.dispatch(set.abort());
+```
 
-## Build
+## Examples
 
-Run `ng build ngrx-set` to build the project. The build artifacts will be stored in the `dist/` directory.
+More examples at:
 
-## Publishing
+[store.ts#creators](projects/example-app/src/app/store.ts#L17)
 
-After building your library with `ng build ngrx-set`, go to the dist folder `cd dist/ngrx-set` and run `npm publish`.
+[example-effects.ts](projects/example-app/src/app/example-effects.ts)
 
-## Running unit tests
+## API
 
-Run `ng test ngrx-set` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### IAbortCreator
 
-## Further help
+Creator to be used when the request is aborted.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+`type IAbortCreator<TType extends string = string>`
+
+`abort({ reason: 'reason' });`
+
+### IFailureCreator
+
+Creator to be used when the request fails.
+
+`type IFailureCreator<TType extends string = string>`
+
+`failure({ error: 'error' });`
+
+### IQueryCreator
+
+Creator to be used when submitting a query to trigger the request.
+
+`type IQueryCreator<TQuery, TType extends string = string>`
+
+`dispatch({ query: TQuery });`
+
+### IPayloadCreator
+
+Creator to be used when receiving the request payload.
+
+`type IPayloadCreator<TPayload, TType extends string = string>`
+
+`success({ payload: TPayload });`
+
+### IEmptyCreator
+
+Creator to be used without passing data.
+
+`type IEmptyCreator<TType extends string>`
+
+`dispatch();`
+`success();`
+
+### ICreatorSet
+
+A set of creators related to a request.
+
+```
+interface ICreatorSet<
+  TDispatch extends ICreator<object, string> | IEmptyCreator<string>,
+  TSuccess extends ICreator<object, string> | IEmptyCreator<string>,
+  TReasonType extends string = string,
+  TErrorType extends string = string,
+> {
+  abort: IAbortCreator<TReasonType>;
+  dispatch: TDispatch;
+  failure: IFailureCreator<TErrorType>;
+  success: TSuccess;
+}
+```
+
+#### ICreatorSet aliases
+
+When neither dispatch nor success carry data.
+
+```
+type IEmptySet<
+  TSource extends string = string,
+  TName extends string = string,
+> = ICreatorSet<
+  IEmptyCreator<IDispatchType<`${IType<TSource, TName>}`>>,
+  IEmptyCreator<ISuccessType<`${IType<TSource, TName>}`>>,
+  IAbortType<`${IType<TSource, TName>}`>,
+  IFailureType<`${IType<TSource, TName>}`>
+>;
+
+createSet('source', 'name'): IEmptySet<"source", "name">;
+```
+
+When the dispatch action carries data but success does not.
+
+```
+type IQuerySet<
+  TQuery,
+  TSource extends string,
+  TName extends string,
+> = ICreatorSet<
+  IQueryCreator<TQuery, IDispatchType<`${IType<TSource, TName>}`>>,
+  IEmptyCreator<ISuccessType<`${IType<TSource, TName>}`>>,
+  IAbortType<`${IType<TSource, TName>}`>,
+  IFailureType<`${IType<TSource, TName>}`>
+>;
+
+createSet<IQuery>('source', 'name'): IQuerySet<IMyQuery, string, string>;
+createSet<IQuery, 'source', 'name'>('source', 'name'): IQuerySet<IQuery, "source", "name">;
+createSetCurry<IQuery>()('source', 'name'): IQuerySet<IQuery, "source", "name">;
+```
+
+When the dispatch action does not carry data but success does.
+
+```
+type IPayloadSet<
+  TPayload,
+  TSource extends string,
+  TName extends string,
+> = ICreatorSet<
+  IEmptyCreator<IDispatchType<`${IType<TSource, TName>}`>>,
+  IPayloadCreator<TPayload, ISuccessType<`${IType<TSource, TName>}`>>,
+  IAbortType<`${IType<TSource, TName>}`>,
+  IFailureType<`${IType<TSource, TName>}`>
+>;
+
+createSet<undefined, IPayload>('source', 'name'): IPayloadSet<IPayload, string, string>;
+createSet<undefined, IPayload, 'source', 'name'>('source', 'name'): IPayloadSet<IPayload, "source", "name">
+createSet<undefined, IPayload>()('source', 'name'): IPayloadSet<IPayload, "source", "name">;
+```
+
+When both the dispatch and success actions carry data.
+
+```
+type IFullSet<
+  TQuery,
+  TPayload,
+  TSource extends string,
+  TName extends string,
+> = ICreatorSet<
+  IQueryCreator<TQuery, IDispatchType<`${IType<TSource, TName>}`>>,
+  IPayloadCreator<TPayload, ISuccessType<`${IType<TSource, TName>}`>>,
+  IAbortType<`${IType<TSource, TName>}`>,
+  IFailureType<`${IType<TSource, TName>}`>
+>;
+
+createSet<IQuery, IPayload>('source', 'name'): IFullSet<IQuery, IPayload, string, string>>;
+createSet<IQuery, IPayload, 'source', 'name'>('source', 'name'): IFullSet<IQuery, IPayload, "source", "name">;
+createSet<IQuery, IPayload>()('source', 'name'): IFullSet<IQuery, IPayload, "source", "name">;
+```
+
+## Support
+
+If you like `ngrx-set`, please support it:
+
+- [with a star on GitHub](https://github.com/parloti/ngrx-set)
+- [with a tweet](https://twitter.com/intent/tweet?text=Check%20ngrx-set%20package%20%23angular%20%23rxjs%20%23ngrx%26url%3Dhttps%3A%2F%2Fgithub.com%2Fparloti%2Fngrx-set)
+
+Thank you!
+
+P.S. If you need help, feel free to
+
+- Contact me on [twitter](https://twitter.com/parloti) or [linkedin](https://www.linkedin.com/in/parloti/)
+- [Open an issue](https://github.com/parloti/ngrx-set/issues)
