@@ -1,6 +1,6 @@
 import { expectTypeOf } from 'expect-type';
-import { IFullSet, IPayloadSet, IQuerySet } from './create-set';
 import { createPayloadSetCurry, createSetCurry } from './create-set-curry';
+import type { IFullSet, IPayloadSet, IQuerySet } from './icreator-set';
 
 interface IMyQuery {
   body: string;
@@ -20,9 +20,9 @@ interface IMyPayload {
   >();
 }
 
-// createSetCurry<void, IMyPayload>() => IPayloadSetCurry<IMyPayload>
+// createSetCurry<undefined, IMyPayload>() => IPayloadSetCurry<IMyPayload>
 {
-  const payload = createSetCurry<void, IMyPayload>()('source', 'name');
+  const payload = createSetCurry<undefined, IMyPayload>()('source', 'name');
   expectTypeOf(payload).toEqualTypeOf<
     Readonly<IPayloadSet<IMyPayload, 'source', 'name'>>
   >();

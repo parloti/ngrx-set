@@ -1,4 +1,5 @@
-import { Inject, Injectable, InjectionToken, isDevMode } from '@angular/core';
+import type { InjectionToken } from '@angular/core';
+import { Inject, Injectable, isDevMode } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, type Action } from '@ngrx/store';
 import {
@@ -35,7 +36,7 @@ type IInjected<TToken> = TToken extends InjectionToken<infer TInjected>
   ? TInjected
   : never;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ExampleEffects extends class {
   constructor(
     protected readonly actions$: Actions,
@@ -44,29 +45,21 @@ export class ExampleEffects extends class {
     >,
   ) {}
 } {
-  constructor(
-    actions$: Actions,
-    @Inject(REGISTERED_CREATOR_SETS_TOKEN)
-    creatorSets: IInjected<typeof REGISTERED_CREATOR_SETS_TOKEN>,
-    private readonly store$: Store,
-    private readonly exampleService: ExampleService,
-  ) {
-    super(actions$, creatorSets);
-  }
-
   example1_dispatch_switch$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(creators.full2.dispatch),
+      ofType(creators.fullStrong.dispatch),
       pluckQuery(),
       onSwitchMap(
         query =>
           this.exampleService.get(query.body).pipe(
-            map(payload => creators.full2.success({ payload })),
+            map(payload => creators.fullStrong.success({ payload })),
 
-            catchFailure(creators.full2.failure),
+            catchFailure(creators.fullStrong.failure),
           ),
         () =>
-          this.store$.dispatch(creators.full2.abort({ reason: 'switched' })),
+          this.store$.dispatch(
+            creators.fullStrong.abort({ reason: 'switched' }),
+          ),
       ),
     ),
   );
@@ -74,7 +67,7 @@ export class ExampleEffects extends class {
   example2_success$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(creators.full2.success),
+        ofType(creators.fullStrong.success),
         pluckPayload(),
         tap(payload => console.log(payload.data)),
       ),
@@ -84,7 +77,7 @@ export class ExampleEffects extends class {
   example3_failure$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(creators.full2.failure),
+        ofType(creators.fullStrong.failure),
         pluckError(),
         tap(error => console.log(error)),
       ),
@@ -94,7 +87,7 @@ export class ExampleEffects extends class {
   example4_abort$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(creators.full2.abort),
+        ofType(creators.fullStrong.abort),
         pluckReason(),
         tap(reason => console.log(reason)),
       ),
@@ -103,17 +96,19 @@ export class ExampleEffects extends class {
 
   example5_dispatch_exhaust$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(creators.full2.dispatch),
+      ofType(creators.fullStrong.dispatch),
       pluckQuery(),
       onExhaustMap(
         query =>
           this.exampleService.get(query.body).pipe(
-            map(payload => creators.full2.success({ payload })),
+            map(payload => creators.fullStrong.success({ payload })),
 
-            catchFailure(creators.full2.failure),
+            catchFailure(creators.fullStrong.failure),
           ),
         () =>
-          this.store$.dispatch(creators.full2.abort({ reason: 'exhausting' })),
+          this.store$.dispatch(
+            creators.fullStrong.abort({ reason: 'exhausting' }),
+          ),
       ),
     ),
   );
@@ -189,4 +184,14 @@ export class ExampleEffects extends class {
     },
     { dispatch: false },
   );
+
+  constructor(
+    actions$: Actions,
+    @Inject(REGISTERED_CREATOR_SETS_TOKEN)
+    creatorSets: IInjected<typeof REGISTERED_CREATOR_SETS_TOKEN>,
+    private readonly store$: Store,
+    private readonly exampleService: ExampleService,
+  ) {
+    super(actions$, creatorSets);
+  }
 }

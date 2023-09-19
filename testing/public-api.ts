@@ -1,1 +1,1 @@
-export { collectEmissions, withTestScheduler } from './rxjs';
+export { collectCalls } from './rxjs';

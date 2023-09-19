@@ -21,20 +21,35 @@ export const creators = {
   ),
   empty: createSet('source', 'empty'),
   query: createSet<IMyQuery>('source', 'query'),
-  query2: createSet<IMyQuery, 'source', 'query2'>('source', 'query2'),
-  payload: createSet<void, IMyPayload>('source', 'payload'),
-  payload2: createSet<void, IMyPayload, 'source', 'payload2'>(
+  queryStrong: createSet<IMyQuery, 'source', 'query-strong'>(
     'source',
-    'payload2',
+    'query-strong',
+  ),
+  payload: createSet<undefined, IMyPayload>('source', 'payload'),
+  payloadStrong: createSet<undefined, IMyPayload, 'source', 'payload-strong'>(
+    'source',
+    'payload-strong',
   ),
   full: createSet<IMyQuery, IMyPayload>('source', 'full'),
-  full2: createSet<IMyQuery, IMyPayload, 'source', 'full2'>('source', 'full2'),
-  queryCurry: createSetCurry<IMyQuery>()('source', 'query-curry'),
-  payloadCurry: createSetCurry<void, IMyPayload>()('source', 'payload-curry'),
-  fullCurry: createSetCurry<IMyQuery, IMyPayload>()('source', 'full-curry'),
-  payloadCurry2: createPayloadSetCurry<IMyPayload>()(
+  fullStrong: createSet<IMyQuery, IMyPayload, 'source', 'full-strong'>(
     'source',
-    'payload-curry2',
+    'full-strong',
+  ),
+  queryCurryNew: createSet<IMyQuery>()('source', 'query-curry-new'),
+  queryCurry: createSetCurry<IMyQuery>()('source', 'query-curry'),
+  payloadCurryNew: createSet<undefined, IMyPayload>()(
+    'source',
+    'payload-curry-new',
+  ),
+  payloadCurry: createSetCurry<undefined, IMyPayload>()(
+    'source',
+    'payload-curry',
+  ),
+  fullCurry: createSetCurry<IMyQuery, IMyPayload>()('source', 'full-curry'),
+  fullCurryNew: createSet<IMyQuery, IMyPayload>()('source', 'full-curry-new'),
+  payloadCurryShort: createPayloadSetCurry<IMyPayload>()(
+    'source',
+    'payload-curry-short',
   ),
 };
 export interface IState {

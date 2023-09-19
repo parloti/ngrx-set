@@ -40,7 +40,7 @@ describe(catchFailure.name, () => {
     error['error'] = error;
 
     expect(cold('-#', {}, error).pipe(catchFailure(failure))).toBeObservable(
-      cold('-(a|)', { a: failure({ error: error.toString() }) }),
+      cold('-(a|)', { a: failure({ error: String(error) }) }),
     );
   });
 });

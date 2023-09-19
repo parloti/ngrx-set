@@ -9,6 +9,7 @@ describe(pluckQuery.name, () => {
     const source$ = cold('-a', {
       a: dispatch({ query: { key: 'value' } }),
     });
+
     expect(source$.pipe(pluckQuery())).toBeObservable(
       cold('-a', { a: { key: 'value' } }),
     );

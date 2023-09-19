@@ -1,7 +1,4 @@
-import { patchKarmaResult } from './patch-karma-result';
-import { patchModule } from './patch-module';
-import { patchParseMarbles } from './patch-parse-marbles';
-
-patchKarmaResult();
-patchModule();
-patchParseMarbles();
+import './patch-define-property';
+import './patch-karma-reporter-result';
+import './patch-stack-trace-limit';
+import './patch-test-scheduler-parse-marbles';

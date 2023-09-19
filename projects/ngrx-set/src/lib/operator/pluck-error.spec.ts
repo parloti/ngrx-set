@@ -9,6 +9,7 @@ describe(pluckError.name, () => {
     const source$ = cold('-a', {
       a: failure({ error: 'failed' }),
     });
+
     expect(source$.pipe(pluckError())).toBeObservable(
       cold('-a', { a: 'failed' }),
     );

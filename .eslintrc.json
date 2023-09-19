@@ -1,62 +1,74 @@
 {
+  "env": { "es6": true },
   "globals": {
     "__dirname": true,
     "require": true
   },
   "parserOptions": {
-    "ecmaVersion": 2017
-  },
-  "env": {
-    "es2020": true,
-    "browser": true,
-    "amd": true,
-    "node": true
+    "ecmaVersion": "latest",
+    "sourceType": "module"
   },
   "root": true,
-  "ignorePatterns": [
-    "node_modules/**/*",
-    "dist/**/*",
-    "coverage/**/*"
-  ],
-  "plugins": [
-    "@typescript-eslint",
-    "testing-library"
-  ],
+  "ignorePatterns": ["node_modules/**/*", "dist/**/*", "coverage/**/*"],
+  "plugins": ["prettier"],
   "extends": [
     "eslint:recommended",
+    "plugin:@eslint-community/eslint-comments/recommended",
     "plugin:testing-library/angular",
     "prettier"
   ],
   "rules": {
-    "eqeqeq": [
-      "warn",
-      "always"
-    ],
-    "lines-between-class-members": [
-      "warn",
-      "always"
+    "eqeqeq": ["error", "always"],
+    "lines-between-class-members": ["error", "always"],
+    "@eslint-community/eslint-comments/disable-enable-pair": "off",
+    "@eslint-community/eslint-comments/no-unused-disable": "error",
+    "@eslint-community/eslint-comments/require-description": [
+      "error",
+      { "ignore": [] }
     ]
   },
   "overrides": [
     {
-      "files": [
-        "*.ts"
-      ],
+      "files": ["*.ts"],
       "parserOptions": {
-        "project": [
-          "tsconfig.json"
-        ],
+        "project": ["tsconfig.json"],
         "createDefaultProgram": true
       },
+      "plugins": ["rxjs-angular"],
       "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:@typescript-eslint/strict",
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended"
+        "prettier",
+        "plugin:prettier/recommended",
+        "plugin:rxjs/recommended",
+        "plugin:import/recommended",
+        "plugin:import/typescript",
+        "plugin:jsdoc/recommended-typescript-error"
       ],
       "rules": {
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/consistent-type-exports": "error",
+        "@typescript-eslint/consistent-type-imports": "error",
+        "@typescript-eslint/member-ordering": "error",
+        "@typescript-eslint/no-extraneous-class": [
+          "error",
+          { "allowWithDecorator": true }
+        ],
         "@typescript-eslint/strict-boolean-expressions": [
-          "warn"
+          "error",
+          {
+            "allowString": false,
+            "allowNumber": false,
+            "allowNullableObject": false,
+            "allowNullableEnum": false
+          }
         ],
         "@angular-eslint/directive-selector": [
           "error",
@@ -73,26 +85,70 @@
             "prefix": "app",
             "style": "kebab-case"
           }
-        ]
-      }
+        ],
+        // https://github.com/cartant/eslint-plugin-rxjs/issues/122
+        "rxjs/no-implicit-any-catch": "off",
+        "rxjs-angular/prefer-async-pipe": "error",
+        "rxjs-angular/prefer-composition": "error",
+        "rxjs-angular/prefer-takeuntil": "error",
+        "jsdoc/check-indentation": "error",
+        "jsdoc/check-line-alignment": "error",
+        "jsdoc/check-syntax": "error",
+        "jsdoc/imports-as-dependencies": "error",
+        "jsdoc/informative-docs": "error",
+        "jsdoc/match-description": "error",
+        "jsdoc/no-bad-blocks": "error",
+        "jsdoc/no-blank-block-descriptions": "error",
+        "jsdoc/no-blank-blocks": "error",
+        "jsdoc/require-asterisk-prefix": "error",
+        "jsdoc/require-description": "error",
+        "jsdoc/require-description-complete-sentence": "error",
+        "jsdoc/require-hyphen-before-param-description": "error",
+        "jsdoc/require-throws": "error",
+        "jsdoc/sort-tags": "error"
+      },
+      "overrides": [
+        {
+          "files": ["*.spec.ts"],
+          "plugins": ["jasmine"],
+          "extends": ["plugin:jasmine/recommended"],
+          "rules": {
+            "jasmine/missing-expect": "error",
+            "jasmine/named-spy": "error",
+            "jasmine/no-assign-spyon": "error",
+            "jasmine/prefer-toBeUndefined": "error",
+            "@typescript-eslint/unbound-method": "off"
+          }
+        }
+      ]
     },
     {
-      "files": [
-        "*.html"
-      ],
-      "extends": [
-        "plugin:@angular-eslint/template/recommended"
-      ],
-      "rules": {}
+      "files": ["*.html"],
+      "extends": ["plugin:@angular-eslint/template/all"],
+      "rules": {
+        "@angular-eslint/template/i18n": "off",
+        "@angular-eslint/template/attributes-order": [
+          "error",
+          { "alphabetical": true }
+        ]
+      }
     },
     {
       "files": [
         "**/__tests__/**/*.[jt]s?(x)",
         "**/?(*.)+(spec|test).[jt]s?(x)"
       ],
-      "extends": [
-        "plugin:testing-library/angular"
-      ]
+      "extends": ["plugin:testing-library/angular"]
     }
-  ]
+  ],
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    }
+  }
 }

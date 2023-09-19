@@ -1,6 +1,7 @@
 import { cold } from 'jasmine-marbles';
+import type { Observable } from 'rxjs';
 import { Subject, catchError } from 'rxjs';
-import { collectEmissions } from 'testing';
+import { collectCalls } from 'testing';
 import { marblesWork } from 'testing/rxjs';
 import { onExhaustMap } from './on-exhaust-map';
 
@@ -13,12 +14,13 @@ describe(onExhaustMap.name, () => {
     source$
       .pipe(onExhaustMap(outer => cold('-d-|', { d: 'd' + outer }), notifier))
       .subscribe();
-    const result$ = collectEmissions(notifier);
+    const result$ = collectCalls(notifier);
     // -a-b-
     //  -d-|
     //    -d-|
     // ---*---
     const expected$ = cold('---n---', { n: 'b' });
+
     expect(result$).toBeObservable(expected$);
   });
 
@@ -30,35 +32,38 @@ describe(onExhaustMap.name, () => {
     source$
       .pipe(onExhaustMap(outer => cold('-d-|', { d: 'd' + outer }), notifier))
       .subscribe();
-    const result$ = collectEmissions(notifier);
+    const result$ = collectCalls(notifier);
     // -a---b
     //  -d-|
     //      -d-|
     // ---------
     const expected$ = cold('---------');
+
     expect(result$).toBeObservable(expected$);
   });
 
   it(`should NOT notify after inner error`, () => {
-    const source$ = new Subject();
+    const source$ = new Subject<string>();
     marblesWork(source$, '-a---b', { a: 'a', b: 'b' });
 
     const notifier = jasmine.createSpy('notifier');
     source$
       .pipe(
         onExhaustMap(
-          outer => cold('-d-#', { d: 'd' + outer }, 'anyError'),
+          (outer: string) =>
+            cold('-d-#', { d: 'd' + outer }, 'anyError') as Observable<string>,
           notifier,
         ),
         catchError((_err, c) => c),
       )
       .subscribe();
-    const result$ = collectEmissions(notifier);
+    const result$ = collectCalls(notifier);
     // -a---b
     //  -d-#
     //      -d-#
     // ---------
     const expected$ = cold('---------');
+
     expect(result$).toBeObservable(expected$);
   });
 
@@ -82,6 +87,7 @@ describe(onExhaustMap.name, () => {
       p: 'cd',
       q: 'ce',
     });
+
     expect(result$).toBeObservable(expected$);
   });
 });

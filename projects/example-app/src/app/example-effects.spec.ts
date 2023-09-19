@@ -36,21 +36,22 @@ describe(ExampleEffects.name, () => {
   describe('example1_dispatch_switch$', () => {
     it(`should dispatch 'success'`, () => {
       actions$ = hot('-ab', {
-        a: creators.full2.dispatch({ query: { body: '1' } }),
-        b: creators.full2.dispatch({ query: { body: '2' } }),
+        a: creators.fullStrong.dispatch({ query: { body: '1' } }),
+        b: creators.fullStrong.dispatch({ query: { body: '2' } }),
       });
 
-      spyOn(service, 'get').and.callFake(((outer: string) =>
+      service.get.and.callFake((outer: string) =>
         cold('-(c|)', {
           c: { data: 'value' + outer },
-        })) as any);
+        }),
+      );
 
       // -ab
       //  -C
       //   -C
       // ---m
       const expected$ = cold('---m', {
-        m: creators.full2.success({ payload: { data: 'value2' } }),
+        m: creators.fullStrong.success({ payload: { data: 'value2' } }),
       });
 
       expect(effects.example1_dispatch_switch$).toBeObservable(expected$);
@@ -58,17 +59,16 @@ describe(ExampleEffects.name, () => {
 
     it(`should dispatch 'failure'`, () => {
       actions$ = hot('-a', {
-        a: creators.full2.dispatch({ query: { body: '1' } }),
+        a: creators.fullStrong.dispatch({ query: { body: '1' } }),
       });
 
-      spyOn(service, 'get').and.callFake((() =>
-        cold('-#', void 0, 'http-error')) as any);
+      service.get.and.callFake(() => cold('-#', void 0, 'http-error'));
 
       // -a
       //  -#
       // --m
       const expected$ = cold('--m', {
-        m: creators.full2.failure({ error: 'http-error' }),
+        m: creators.fullStrong.failure({ error: 'http-error' }),
       });
 
       expect(effects.example1_dispatch_switch$).toBeObservable(expected$);
@@ -76,23 +76,25 @@ describe(ExampleEffects.name, () => {
 
     it(`should dispatch 'abort'`, () => {
       actions$ = hot('-ab', {
-        a: creators.full2.dispatch({ query: { body: '1' } }),
-        b: creators.full2.dispatch({ query: { body: '2' } }),
+        a: creators.fullStrong.dispatch({ query: { body: '1' } }),
+        b: creators.fullStrong.dispatch({ query: { body: '2' } }),
       });
 
-      spyOn(service, 'get').and.callFake(((outer: string) =>
+      service.get.and.callFake((outer: string) =>
         cold('-(c|)', {
           c: { data: 'value' + outer },
-        })) as any);
+        }),
+      );
 
       // -ab
       //  -C
       //   -C
       // --m
       const expected$ = cold('--m', {
-        m: creators.full2.abort({ reason: 'switched' }),
+        m: creators.fullStrong.abort({ reason: 'switched' }),
       });
       effects.example1_dispatch_switch$.subscribe();
+
       expect(mockStore$.scannedActions$.pipe(skip(1))).toBeObservable(
         expected$,
       );
