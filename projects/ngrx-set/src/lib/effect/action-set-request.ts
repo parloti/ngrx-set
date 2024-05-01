@@ -1,26 +1,25 @@
 import type { Actions } from '@ngrx/effects';
 import { ofType } from '@ngrx/effects';
-import type {
-  IAbortProp,
-  ICreatorSet,
-  IFailureProp,
-  IPayloadCreator,
-  IPayloadProp,
-  IQueryCreator,
-} from 'ngrx-set';
-import { catchFailure } from 'ngrx-set';
 import type { Observable, ObservableInputTuple } from 'rxjs';
 import {
+  Subject,
   combineLatest,
   first,
   map,
   merge,
   of,
-  Subject,
   switchMap,
   tap,
 } from 'rxjs';
-import type { IAction, IEmptyCreator } from '../icreator-set';
+import type {
+  IAction,
+  ICreatorSet,
+  IEmptyCreator,
+  IPayloadCreator,
+  IQueryCreator,
+} from '../icreator-set';
+import { catchFailure } from '../operator';
+import type { IAbortProp, IFailureProp, IPayloadProp } from '../properties';
 
 /**
  * It controls the request for a set of creators, including collecting the needed data to complete the call body, listening for the "dispatch" action and triggering "abort", "success" or "failure" actions when the appropriate events occur.
