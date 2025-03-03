@@ -1,11 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import type { ActionType } from '@ngrx/store';
 import type { Observable, OperatorFunction } from 'rxjs';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import type { IFailureCreator } from '../icreator-set';
-
-type IFailureAction = ActionType<IFailureCreator>;
+import type { IAction, IFailureCreator } from '../icreator-set';
+import type { IFailureProp } from './../properties';
 
 interface IStringable {
   toString(): string;
@@ -28,18 +26,20 @@ function parseError(error: unknown): string {
 }
 
 /**
- * Catches errors on the observable to be handled by returning a new observable that issues a failure action.
+ * Catches errors on the observable to be handled by returning a new observable that emits a failure action.
  * @template TValue Type emited by the source observable.
+ * @template TErrorType Unique name identifying the type of action to be used when the request fails.
  * @param creator - The originator that will generate the failure action to be issued, in case of failure.
- * @returns A RxJs operator function.
+ * @returns A function that returns an Observable that originates from either
+ * the source or the Observable that emits a failure action.
  */
-export function catchFailure<TValue>(
-  creator: IFailureCreator,
-): OperatorFunction<TValue, TValue | IFailureAction> {
+export function catchFailure<TValue, TErrorType extends string = string>(
+  creator: IFailureCreator<TErrorType>,
+): OperatorFunction<TValue, TValue | IAction<IFailureProp, TErrorType>> {
   type ISelector = (
     error: IStringable,
     caught: Observable<TValue>,
-  ) => Observable<IFailureAction>;
+  ) => Observable<IAction<IFailureProp, TErrorType>>;
 
   const selector: ISelector = error => {
     let failure: string;

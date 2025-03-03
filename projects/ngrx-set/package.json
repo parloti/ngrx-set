@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/parloti/ngrx-set#readme",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "peerDependencies": {
     "@angular/common": ">=5.0.0",
     "@ngrx/store": ">=10.0.0",
