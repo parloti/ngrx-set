@@ -3,4 +3,5 @@
  */
 
 export * from './lib';
+export * from './lib/effect';
 export * from './lib/operator';
