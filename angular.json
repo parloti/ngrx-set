@@ -56,11 +56,12 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/example-app",
+            "outputPath": {
+              "base": "dist/example-app"
+            },
             "index": "projects/example-app/src/index.html",
-            "main": "projects/example-app/src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "projects/example-app/tsconfig.app.json",
             "assets": [
@@ -68,7 +69,8 @@
               "projects/example-app/src/assets"
             ],
             "styles": ["projects/example-app/src/styles.css"],
-            "scripts": []
+            "scripts": [],
+            "browser": "projects/example-app/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -87,9 +89,7 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true

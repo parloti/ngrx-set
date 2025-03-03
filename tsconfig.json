@@ -27,7 +27,6 @@
     "typeRoots": ["node_modules/@types"],
     // Emit
     "declaration": false,
-    "downlevelIteration": true,
     "importHelpers": true,
     "newLine": "crlf",
     "outDir": "./dist/out-tsc",
