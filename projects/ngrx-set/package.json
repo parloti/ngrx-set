@@ -17,11 +17,11 @@
   },
   "homepage": "https://github.com/parloti/ngrx-set#readme",
   "license": "MIT",
-  "version": "1.1.1",
+  "version": "17.0.0",
   "peerDependencies": {
-    "@angular/common": ">=5.0.0",
-    "@ngrx/store": ">=10.0.0",
-    "rxjs": ">=6.0.0"
+    "@angular/common": "^17.0.0",
+    "@ngrx/store": "^17.0.0",
+    "rxjs": "^7.0.0"
   },
   "dependencies": {
     "tslib": "^2.6.2"
