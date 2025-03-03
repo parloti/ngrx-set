@@ -1,5 +1,5 @@
 import type { InjectionToken } from '@angular/core';
-import { Inject, Injectable, isDevMode } from '@angular/core';
+import { inject, Inject, Injectable, isDevMode } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, type Action } from '@ngrx/store';
 import {
@@ -186,12 +186,11 @@ export class ExampleEffects extends class {
   );
 
   constructor(
-    actions$: Actions,
     @Inject(REGISTERED_CREATOR_SETS_TOKEN)
     creatorSets: IInjected<typeof REGISTERED_CREATOR_SETS_TOKEN>,
     private readonly store$: Store,
     private readonly exampleService: ExampleService,
   ) {
-    super(actions$, creatorSets);
+    super(inject(Actions), creatorSets);
   }
 }

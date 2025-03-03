@@ -67,6 +67,7 @@ export const reducer = createReducer(
     const loading = { ...state.p_loading };
     for (const key in action) {
       if (key !== 'type' && Object.prototype.hasOwnProperty.call(action, key)) {
+        loading[key] = loading[key] ?? 0;
         if (action[key] === true) {
           loading[key]++;
         } else {
