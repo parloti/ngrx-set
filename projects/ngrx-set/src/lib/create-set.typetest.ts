@@ -1,4 +1,5 @@
-import type { TypedAction } from '@ngrx/store/src/models';
+import type { Action } from '@ngrx/store';
+
 import { expectTypeOf } from 'expect-type';
 import { createSet } from './create-set';
 import type {
@@ -49,7 +50,7 @@ type IMyPayload = { data: string };
   >();
   expectTypeOf(empty.dispatch.type).toEqualTypeOf<'[source] name (Dispatch)'>();
   expectTypeOf(empty.dispatch).returns.toEqualTypeOf<
-    TypedAction<'[source] name (Dispatch)'>
+    Action<'[source] name (Dispatch)'>
   >();
   expectTypeOf(empty.dispatch).parameters.toEqualTypeOf<[]>();
 
@@ -69,7 +70,7 @@ type IMyPayload = { data: string };
   >();
   expectTypeOf(empty.success.type).toEqualTypeOf<'[source] name (Success)'>();
   expectTypeOf(empty.success).returns.toEqualTypeOf<
-    TypedAction<'[source] name (Success)'>
+    Action<'[source] name (Success)'>
   >();
   expectTypeOf(empty.success).parameters.toEqualTypeOf<[]>();
 }
@@ -127,7 +128,7 @@ type IMyPayload = { data: string };
     query.success.type,
   ).toEqualTypeOf<`[${string}] ${string} (Success)`>();
   expectTypeOf(query.success).returns.toEqualTypeOf<
-    TypedAction<`[${string}] ${string} (Success)`>
+    Action<`[${string}] ${string} (Success)`>
   >();
   expectTypeOf(query.success).parameters.toEqualTypeOf<[]>();
 }
@@ -183,7 +184,7 @@ type IMyPayload = { data: string };
     query.success.type,
   ).toEqualTypeOf<`[source] ${string} (Success)`>();
   expectTypeOf(query.success).returns.toEqualTypeOf<
-    TypedAction<`[source] ${string} (Success)`>
+    Action<`[source] ${string} (Success)`>
   >();
   expectTypeOf(query.success).parameters.toEqualTypeOf<[]>();
 }
@@ -232,7 +233,7 @@ type IMyPayload = { data: string };
   >();
   expectTypeOf(query.success.type).toEqualTypeOf<'[source] name (Success)'>();
   expectTypeOf(query.success).returns.toEqualTypeOf<
-    TypedAction<'[source] name (Success)'>
+    Action<'[source] name (Success)'>
   >();
   expectTypeOf(query.success).parameters.toEqualTypeOf<[]>();
 }
@@ -264,7 +265,7 @@ type IMyPayload = { data: string };
     payload.dispatch.type,
   ).toEqualTypeOf<`[${string}] ${string} (Dispatch)`>();
   expectTypeOf(payload.dispatch).returns.toEqualTypeOf<
-    TypedAction<`[${string}] ${string} (Dispatch)`>
+    Action<`[${string}] ${string} (Dispatch)`>
   >();
   expectTypeOf(payload.dispatch).parameters.toEqualTypeOf<[]>();
 
@@ -321,7 +322,7 @@ type IMyPayload = { data: string };
     payload.dispatch.type,
   ).toEqualTypeOf<`[source] ${string} (Dispatch)`>();
   expectTypeOf(payload.dispatch).returns.toEqualTypeOf<
-    TypedAction<`[source] ${string} (Dispatch)`>
+    Action<`[source] ${string} (Dispatch)`>
   >();
   expectTypeOf(payload.dispatch).parameters.toEqualTypeOf<[]>();
 
@@ -379,7 +380,7 @@ type IMyPayload = { data: string };
     payload.dispatch.type,
   ).toEqualTypeOf<'[source] name (Dispatch)'>();
   expectTypeOf(payload.dispatch).returns.toEqualTypeOf<
-    TypedAction<'[source] name (Dispatch)'>
+    Action<'[source] name (Dispatch)'>
   >();
   expectTypeOf(payload.dispatch).parameters.toEqualTypeOf<[]>();
 
@@ -625,7 +626,7 @@ type IMyPayload = { data: string };
   >();
   expectTypeOf(query.success.type).toEqualTypeOf<'[source] name (Success)'>();
   expectTypeOf(query.success).returns.toEqualTypeOf<
-    TypedAction<'[source] name (Success)'>
+    Action<'[source] name (Success)'>
   >();
   expectTypeOf(query.success).parameters.toEqualTypeOf<[]>();
 }
@@ -658,7 +659,7 @@ type IMyPayload = { data: string };
     payload.dispatch.type,
   ).toEqualTypeOf<'[source] name (Dispatch)'>();
   expectTypeOf(payload.dispatch).returns.toEqualTypeOf<
-    TypedAction<'[source] name (Dispatch)'>
+    Action<'[source] name (Dispatch)'>
   >();
   expectTypeOf(payload.dispatch).parameters.toEqualTypeOf<[]>();
 

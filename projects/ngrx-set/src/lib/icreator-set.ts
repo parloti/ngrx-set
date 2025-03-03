@@ -1,5 +1,5 @@
-import type { NotAllowedCheck } from '@ngrx/store';
-import type { ActionCreator, TypedAction } from '@ngrx/store/src/models';
+import type { NotAllowedCheck, Action } from '@ngrx/store';
+import type { ActionCreator } from '@ngrx/store/src/models';
 import type {
   IAbortProp,
   IFailureProp,
@@ -14,7 +14,7 @@ type IPropsCheck<TProps extends object> = TProps & NotAllowedCheck<TProps>;
  * @template TProps Data type carried by the action.
  * @template TType Unique name identifying the type of action.
  */
-export type IAction<TProps, TType extends string> = TProps & TypedAction<TType>;
+export type IAction<TProps, TType extends string> = TProps & Action<TType>;
 
 type ICreator<TProps extends object, TType extends string> = ActionCreator<
   TType,
@@ -61,7 +61,7 @@ export type IPayloadCreator<TPayload, TType extends string = string> = ICreator<
  */
 export type IEmptyCreator<TType extends string> = ActionCreator<
   TType,
-  () => TypedAction<TType>
+  () => Action<TType>
 >;
 
 /**
