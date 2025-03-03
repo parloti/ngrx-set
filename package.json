@@ -1,10 +1,11 @@
 {
   "name": "ngrx-set-ws",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "publish": "ng build ngrx-set && cd dist/ngrx-set && npm publish",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "coverage": "ng test --code-coverage --browsers ChromeHeadlessCI",
@@ -13,7 +14,7 @@
     "eslint:fix": "npm run eslint -- --fix",
     "htmllint": "npx linthtml **/*.html",
     "lint": "ng lint",
-    "lint:fix": "npm run htmllint && npm run stylelint:fix && npm run eslint:fix && npm run prettier:write",
+    "lint:fix": "npm run eslint:fix && npm run htmllint && npm run stylelint:fix && npm run prettier:write",
     "prettier": "npx prettier --ignore-unknown .",
     "prettier:write": "npm run prettier -- --write",
     "stylelint": "npx stylelint \"**/*.{css,scss,sass}\"",
