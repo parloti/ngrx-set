@@ -3,7 +3,6 @@ export {
   createSet,
   provideRegisteredCreatorSets,
 } from './create-set';
-export { createPayloadSetCurry, createSetCurry } from './create-set-curry';
 export { createType } from './create-type';
 export type {
   IAbortCreator,

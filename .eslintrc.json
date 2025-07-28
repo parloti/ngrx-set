@@ -34,7 +34,6 @@
         "project": ["tsconfig.json"],
         "createDefaultProgram": true
       },
-      "plugins": ["rxjs-angular"],
       "extends": [
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
@@ -43,7 +42,6 @@
         "plugin:@angular-eslint/template/process-inline-templates",
         "prettier",
         "plugin:prettier/recommended",
-        "plugin:rxjs/recommended",
         "plugin:import/recommended",
         "plugin:import/typescript",
         "plugin:jsdoc/recommended-typescript-error"
@@ -86,11 +84,6 @@
             "style": "kebab-case"
           }
         ],
-        // https://github.com/cartant/eslint-plugin-rxjs/issues/122
-        "rxjs/no-implicit-any-catch": "off",
-        "rxjs-angular/prefer-async-pipe": "error",
-        "rxjs-angular/prefer-composition": "error",
-        "rxjs-angular/prefer-takeuntil": "error",
         "jsdoc/check-indentation": "error",
         "jsdoc/check-line-alignment": "error",
         "jsdoc/check-syntax": "error",

@@ -1,14 +1,10 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
-import * as ngKarma from '@angular-devkit/build-angular/src/tools/webpack/plugins/karma/karma';
-import karmaJasmineHtmlReporter from 'karma-jasmine-html-reporter';
-import karmaChromeLauncher from 'karma-chrome-launcher';
-import customLaunchers from './karma-custom-launchers';
-import karmaCoverage from 'karma-coverage';
-import karmaJasmine from 'karma-jasmine';
-import type { Config } from 'karma';
-import { join } from 'path';
+import type { Config, CustomLauncher } from 'karma';
+
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 /**
  * Karma configuration file.
@@ -29,18 +25,11 @@ export default function (config: Config) {
     },
     customLaunchers: customLaunchers,
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
-    plugins: [
-      karmaChromeLauncher,
-      karmaCoverage,
-      karmaJasmine,
-      karmaJasmineHtmlReporter,
-      ngKarma,
-    ],
     jasmineHtmlReporter: {
       suppressAll: false, // removes the duplicated traces // TODO: retornar para true
     },
     coverageReporter: {
-      dir: join(__dirname, './coverage'),
+      dir: join(dirname(fileURLToPath(import.meta.url)), './coverage'),
       subdir: '.',
       reporters: [{ type: 'html' }, { type: 'text-summary' }],
     },
@@ -49,7 +38,40 @@ export default function (config: Config) {
     colors: true,
     logLevel: config.LOG_INFO,
     browsers: ['ChromeDebugging'],
+    plugins: [
+      'karma-jasmine',
+      'karma-chrome-launcher',
+      'karma-jasmine-html-reporter',
+      'karma-coverage',
+      '@angular-devkit/build-angular/plugins/karma',
+    ],
     restartOnFileChange: true,
     retryLimit: 10,
   });
 }
+
+const customLaunchers: Record<string, CustomLauncher> = {
+  ChromeDebugging: {
+    base: 'Chrome',
+    chromeDataDir: resolve(dirname(fileURLToPath(import.meta.url)), '.chrome'),
+    flags: [
+      '--remote-debugging-port=9333',
+      '--auto-open-devtools-for-tabs',
+      '--hide-crash-restore-bubble',
+      '--enable-automation',
+      'http://localhost:9876/debug.html',
+    ],
+  },
+  ChromeHeadlessCI: {
+    base: 'ChromeHeadless',
+    flags: ['--window-size=1024,768', '--no-sandbox'],
+  },
+  ChromeHeadlessLocal: {
+    base: 'ChromeHeadless',
+    flags: ['--window-size=1024,768'],
+  },
+  FirefoxHeadless: {
+    base: 'Firefox',
+    flags: ['-headless'],
+  },
+};

@@ -3,16 +3,17 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import type { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold, hot } from 'jasmine-marbles';
-import { MockProvider } from 'ng-mocks';
+import { MockProvider, ngMocks } from 'ng-mocks';
 import { NEVER, skip, type Observable } from 'rxjs';
 import { ExampleEffects, ExampleService } from './example-effects';
-import { creators, type IState } from './store';
+import { creators } from './store';
+
+ngMocks.autoSpy('jasmine');
 
 describe(ExampleEffects.name, () => {
   let effects: ExampleEffects;
   let service: jasmine.SpyObj<ExampleService>;
   let actions$: Observable<Action> = NEVER;
-  let initialState: IState;
   let mockStore$: MockStore;
 
   beforeEach(() => {
@@ -20,7 +21,7 @@ describe(ExampleEffects.name, () => {
       providers: [
         ExampleEffects,
         MockProvider(ExampleService),
-        provideMockStore({ initialState }),
+        provideMockStore(),
         provideMockActions(() => actions$),
       ],
     });

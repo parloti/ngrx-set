@@ -115,7 +115,6 @@ type IQuerySet<
 
 createSet<IQuery>('source', 'name'): IQuerySet<IMyQuery, string, string>;
 createSet<IQuery, 'source', 'name'>('source', 'name'): IQuerySet<IQuery, "source", "name">;
-createSetCurry<IQuery>()('source', 'name'): IQuerySet<IQuery, "source", "name">;
 ```
 
 When the dispatch action does not carry data but success does.
@@ -134,8 +133,6 @@ type IPayloadSet<
 
 createSet<void, IPayload>('source', 'name'): IPayloadSet<IPayload, string, string>;
 createSet<void, IPayload, 'source', 'name'>('source', 'name'): IPayloadSet<IPayload, "source", "name">
-createSetCurry<void, IPayload>()('source', 'name'): IPayloadSet<IPayload, "source", "name">;
-createPayloadSetCurry<IPayload>()('source', 'name'): IPayloadSet<IPayload, "source", "name">;
 ```
 
 When both the dispatch and success actions carry data.
@@ -155,7 +152,6 @@ type IFullSet<
 
 createSet<IQuery, IPayload>('source', 'name'): IFullSet<IQuery, IPayload, string, string>>;
 createSet<IQuery, IPayload, 'source', 'name'>('source', 'name'): IFullSet<IQuery, IPayload, "source", "name">;
-createSetCurry<IQuery, IPayload>()('source', 'name'): IFullSet<IQuery, IPayload, "source", "name">;
 ```
 
 ## Support

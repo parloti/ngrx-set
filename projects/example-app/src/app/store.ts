@@ -1,8 +1,6 @@
 import { createAction, createReducer, on, props } from '@ngrx/store';
 import {
-  createPayloadSetCurry,
   createSet,
-  createSetCurry,
   createType,
 } from 'ngrx-set';
 import { updateState } from './update-state';
@@ -36,21 +34,11 @@ export const creators = {
     'full-strong',
   ),
   queryCurryNew: createSet<IMyQuery>()('source', 'query-curry-new'),
-  queryCurry: createSetCurry<IMyQuery>()('source', 'query-curry'),
   payloadCurryNew: createSet<undefined, IMyPayload>()(
     'source',
     'payload-curry-new',
   ),
-  payloadCurry: createSetCurry<undefined, IMyPayload>()(
-    'source',
-    'payload-curry',
-  ),
-  fullCurry: createSetCurry<IMyQuery, IMyPayload>()('source', 'full-curry'),
   fullCurryNew: createSet<IMyQuery, IMyPayload>()('source', 'full-curry-new'),
-  payloadCurryShort: createPayloadSetCurry<IMyPayload>()(
-    'source',
-    'payload-curry-short',
-  ),
 };
 export interface IState {
   p_loading: { [key: string]: number };
