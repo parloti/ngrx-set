@@ -19,7 +19,7 @@
     // Modules
     "baseUrl": "./",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "paths": {
       "ngrx-set": ["dist/ngrx-set"]
     },

@@ -1,5 +1,4 @@
-import type { NotAllowedCheck, Action } from '@ngrx/store';
-import type { ActionCreator } from '@ngrx/store/src/models';
+import type { Action, ActionCreator, NotAllowedCheck } from '@ngrx/store';
 import type {
   IAbortProp,
   IFailureProp,
